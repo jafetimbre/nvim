@@ -8,8 +8,8 @@ return {
 				null_ls.builtins.formatting.stylua,
 
 				-- python formating and linting
-				--null_ls.builtins.formatting.black,
-				--null_ls.builtins.formatting.isort,
+				null_ls.builtins.formatting.black,
+				--null_ls.builtins.diagnostics.pyright,
 
 				-- django formating and linting
 				--null_ls.builtins.formatting.djlint,

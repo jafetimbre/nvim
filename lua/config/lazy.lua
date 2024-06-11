@@ -1,13 +1,13 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable", -- latest stable release
-        lazypath,
-    })
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -23,7 +23,8 @@ require("lazy").setup({
         -- have outdated releases, which may break your Neovim install.
         version = false, -- always use the latest git commit
         -- version = "*", -- try installing the latest stable version for plugins that support semver
-        colorscheme = { "catppuccin" }
+        colorscheme = { "catppuccin" },
+        keymaps = true
     },
     checker = { enabled = true }, -- automatically check for plugin updates
     performance = {
@@ -33,6 +34,9 @@ require("lazy").setup({
         },
     },
 })
+
+require("config.keymaps")
+
 local Event = require("lazy.core.handler.event")
 Event.mappings.LazyFile = { id = "LazyFile", event = { "BufReadPost", "BufNewFile", "BufWritePre" } }
 Event.mappings["User LazyFile"] = Event.mappings.LazyFile

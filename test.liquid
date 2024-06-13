@@ -1,0 +1,215 @@
+<style>
+  .sbx_row_cta {
+    margin-top: 20px;
+    display: flex;
+    {% if section.settings.reverse_cols %}
+    flex-direction: row-reverse;
+    {% else %}
+    flex-direction: row;
+    {% endif %}
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+  }
+  .sbx_col_cta {
+    flex: 1;
+    max-width: 100%;
+  }
+  .sbx_col_cta > img,
+  .sbx_col_cta > video {
+    max-width: 500px;
+    width: 100%;
+  }
+  .sbx_col_cta.cta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    outline: 8px solid rgb(58, 58, 58);
+    outline-style: double;
+    padding: 30px 20px;
+    max-width: 500px;
+  }
+  .sbx_cta_header {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+  .sbx_col_cta.cta > ul li::before {
+    content: "\2022";
+    font-weight: bold;
+    display: inline-block;
+    width: 1.2em;
+    margin-left: -1em;
+  }
+  .sbx_cta_btns_txt {
+    margin-top: 30px;
+    font-weight: 600;
+  }
+  .sbx_cta_btns {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    max-width: 100%;
+  }
+  .sbx_cta_btn {
+    border-radius: 5px;
+    {% comment %} display: flex;
+    flex-direction: row;
+    gap: 10px; {% endcomment %}
+  }
+  .cta_other_btns {
+    margin-top: 15px;
+    text-decoration: underline;
+    opacity: 80%;
+  }
+
+  @media screen and (max-width: 1050px) {
+    .sbx_row_cta {
+      flex-direction: column;
+    }
+    .sbx_cta_header {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="sbx_row_cta page-width">
+  <div class="sbx_col_cta">
+    {% if section.settings.side_img != blank %}
+      <img
+        src="{{ section.settings.side_img | image_url: width: 2000 }}"
+        class="sbx_img_shadow"
+        alt="hero image"
+        loading="eager"
+        width="auto"
+        height="auto"
+      >
+    {% elsif section.settings.side_video_webm != blank or section.settings.side_video_mp4 != blank %}
+      <video
+        class="sbx_img_shadow"
+        autoplay=""
+        muted=""
+        loop=""
+        playsinline
+        style="width: 100%;"
+      >
+        <source src="{{ section.settings.side_video_webm.url }}" type="video/webm">
+        <source src="{{ section.settings.side_video_mp4 }}" type="video/mp4">
+      </video>
+    {% endif %}
+  </div>
+  <div id="cta" class="sbx_col_cta cta">
+    <h3 class="sbx_cta_header">
+      {{ section.settings.heading }}
+    </h3>
+    {{ section.settings.body }}
+    <p class="sbx_cta_btns_txt">{{ section.settings.pre_btn_txt }}</p>
+    <div class="sbx_cta_btns">
+      {% for block in section.blocks %}
+        <a
+          href="{{ block.settings.btn_url }}"
+          class="btn sbx_cta_btn lc-relation-btn"
+          style="background-color: {{ block.settings.btn_color }};color:{{ block.settings.btn_text_color }};"
+        >
+          {{ block.settings.title }}
+        </a>
+      {% endfor %}
+    </div>
+    <small style="margin-top:15px;">no CC required to start</small>
+    <a href="{{ section.settings.other_btn_url }}" class="cta_other_btns lc-relation-btn"
+      ><small>{{ section.settings.other_btn_txt }}</small></a
+    >
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sbx: CTA section",
+  "settings": [
+    {
+      "id": "accent_color",
+      "type": "color",
+      "label": "Accent color",
+      "default": "#AFC6CC"
+    },
+    {
+      "id": "heading",
+      "type": "textarea",
+      "label": "CTA heading"
+    },
+    {
+      "id": "body",
+      "type": "richtext",
+      "label": "CTA body"
+    },
+    {
+      "id": "pre_btn_txt",
+      "type": "textarea",
+      "label": "Pre-cta text"
+    },
+    {
+      "id": "other_btn_txt",
+      "type": "text",
+      "label": "Other CTAs text"
+    },
+    {
+      "id": "other_btn_url",
+      "type": "url",
+      "label": "Other CTAs url"
+    },
+    {
+      "id": "side_img",
+      "type": "image_picker",
+      "label": "Side image"
+    },
+    {
+      "id": "side_video_webm",
+      "type": "url",
+      "label": "Side video WEBM"
+    },
+    {
+      "id": "side_video_mp4",
+      "type": "url",
+      "label": "Side video MP4"
+    },
+    {
+      "id": "reverse_cols",
+      "type": "checkbox",
+      "label": "Reverse order",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "url",
+          "id": "btn_url",
+          "label": "URL"
+        },
+        {
+          "type": "color",
+          "id": "btn_color",
+          "label": "Background color"
+        },
+        {
+          "type": "color",
+          "id": "btn_text_color",
+          "label": "Text color"
+        }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Sbx: CTA section" }]
+}
+{% endschema %}
